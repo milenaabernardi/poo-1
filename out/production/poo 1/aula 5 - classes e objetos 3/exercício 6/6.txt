@@ -1,0 +1,1 @@
+a variável deve ser declaração como 'static'.
