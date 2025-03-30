@@ -1,0 +1,1 @@
+a classe Y está incorreta porque o atributo cont da classe X é declarado como privado (private int cont;). isso significa que ele não pode ser acessado diretamente por outra classe.

@@ -1,0 +1,13 @@
+Exemplo de objeto: Java javaObj = new Java("Java 11");
+
+Exemplo de método: javaobj.getNome()
+
+Exemplo de classe: public class JavaApp {
+
+
+Significados
+Objeto: estruturas que são criadas a partir das classes.
+
+Método: é um serviço oferecido pelos objetos de uma determinada classe.
+
+Classe: modelo abstrato usado para definir objetos com atributos e métodos.

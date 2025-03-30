@@ -1,7 +1,7 @@
 public class TesteLivro {
     public static void main(String[] args){
-        Livro livro1 = new Livro();
-        Livro livro2 = new Livro();
+        Livro2 livro1 = new Livro2();
+        Livro2 livro2 = new Livro2();
 
         livro1.setTitulo("Jogos Vorazes");
         livro1.setAutor("Suzanne Collins");
