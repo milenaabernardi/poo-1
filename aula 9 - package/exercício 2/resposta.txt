@@ -1,0 +1,1 @@
+Sim, super() pode receber parâmetros compatíveis com os do construtor da superclasse.

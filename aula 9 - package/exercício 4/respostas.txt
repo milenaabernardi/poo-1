@@ -1,0 +1,19 @@
+b)Somente os métodos definidos em A:
+m1()
+m2()
+m3()
+
+
+c)Todos os métodos públicos da superclasse e da subclasse:
+m1()
+m2()
+m3()
+m4()
+m5()
+
+
+d)Métodos acessíveis por objetos de B:
+m2()
+m3()
+m4()
+m5()
