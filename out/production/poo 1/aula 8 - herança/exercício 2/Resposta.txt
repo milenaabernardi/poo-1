@@ -1,7 +1,0 @@
-Saída do programa:
-
-Computador()
-Notebook()
-Código: 12345
-
-Quando um objeto Notebook é criado, o Java automaticamente chama o construtor da superclasse Computador primeiro. Em seguida, executa o corpo do construtor de Notebook. A variável codigo é atribuída e, logo após, o método ligar() é chamado, exibindo seu valor.

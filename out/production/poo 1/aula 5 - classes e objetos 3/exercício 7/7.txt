@@ -1,1 +1,0 @@
-o modificador de acesso que deve ser utilizado é o 'private'.
