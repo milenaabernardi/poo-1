@@ -1,0 +1,5 @@
+// Linha original
+MinhaClasse<Double, String> obj = new MinhaClasse<Double, String>(1.1, "Olá");
+
+// Linha com inferência de tipos
+MinhaClasse<Double, String> obj = new MinhaClasse<>(1.1, "Olá");

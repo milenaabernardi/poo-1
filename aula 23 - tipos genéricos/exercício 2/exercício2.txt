@@ -1,0 +1,1 @@
+Não, tipos primitivos (como int, double) não podem ser usados diretamente como parâmetros de tipo genérico. Os genéricos funcionam apenas com tipos de referência (objetos). Para contornar isso, utilizamos classes wrapper, como Integer, Double, Character, etc.
