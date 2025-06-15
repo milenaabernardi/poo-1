@@ -1,0 +1,10 @@
+Linha modificada:
+char[] chrs = { 'V', 'J', 'L', 'E', 'E' };
+
+Linha 15 – Conteúdo do conjunto hash:
+[P, Q, C, T, E, V, J, L] // MODIFICADO: [V, J, L, E] (ordem pode variar)
+O HashSet não permite duplicatas, então o segundo 'E' é descartado. A ordem de exibição não é garantida.
+
+Linha 19 – Conteúdo do conjunto de árvore:
+[C, E, J, L, P, Q, T, V] // MODIFICADO: [E, J, L, V]
+O TreeSet também não permite duplicatas, e ordena os elementos automaticamente em ordem crescente.
