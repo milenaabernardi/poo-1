@@ -6,8 +6,7 @@ public enum TipoElemento {
     ESCONDERIJO('-'),
     PROSSEGUIR('+'),
     TELEPORTE('T'),
-    EXPLOSAO('X'),
-    RASTRO_JOGADOR('J');
+    EXPLOSAO('X');
 
     private final char simbolo;
 

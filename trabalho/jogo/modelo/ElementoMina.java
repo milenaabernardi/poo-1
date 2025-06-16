@@ -1,6 +1,9 @@
 package jogo.modelo;
 
-public abstract class ElementoMina implements ElementoAcao {
+/**
+ * Elemento abstrato da mina.
+ */
+public abstract class ElementoMina {
     private final char simbolo;
 
     public ElementoMina(char simbolo) {
@@ -11,5 +14,10 @@ public abstract class ElementoMina implements ElementoAcao {
         return simbolo;
     }
 
+    /**
+     * Executa a ação do elemento no jogador.
+     * @param jogador Jogador afetado
+     * @return mensagem de resultado
+     */
     public abstract String executar(Jogador jogador);
 }
