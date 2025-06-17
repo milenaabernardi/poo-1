@@ -3,17 +3,17 @@ package jogo.core;
 import jogo.modelo.*;
 import jogo.util.Cores;
 import jogo.util.RankingUtil;
+
 import java.util.*;
 
 /**
- * Classe responsável por controlar o fluxo principal do jogo.
- * Adaptado para exibir mensagens de ação e permitir escolha de cores.
+ * Classe principal de controle do jogo Caçadores de Diamantes.
+ * Controla fluxo do jogo, entrada do usuário e ranking persistente.
  * @author Milena
- * @version 1.0
+ * @version 2.0
  */
-
 public class MotorJogo {
-    private final int MAX_JOGADAS = 100;
+    private final int MAX_JOGADAS = 10;
     private final int LINHAS = 10;
     private final int COLUNAS = 10;
     private Tabuleiro tabuleiro;
@@ -27,7 +27,7 @@ public class MotorJogo {
         System.out.println("=== BEM-VINDO(A) AO CAÇADORES DE DIAMANTES ===");
         RankingUtil.exibirRankingAnterior();
 
-        System.out.println("Quantos jogadores (2 a 4)? ");
+        System.out.print("Quantos jogadores (2 a 4)? ");
         int num = scanner.nextInt();
         scanner.nextLine();
 
@@ -38,11 +38,12 @@ public class MotorJogo {
         for (int i = 0; i < num; i++) {
             System.out.print("Nome do Jogador " + (i + 1) + ": ");
             String nome = scanner.nextLine();
-
             String cor = escolherCorManual(scanner, coresDisponiveis);
 
-            Jogador j = new Jogador(nome, cor, new Random().nextInt(LINHAS), new Random().nextInt(COLUNAS));
-            jogadores.add(j);
+            Jogador jogador = new Jogador(nome, cor,
+                    new Random().nextInt(LINHAS),
+                    new Random().nextInt(COLUNAS));
+            jogadores.add(jogador);
         }
 
         jogar(scanner);
@@ -50,10 +51,8 @@ public class MotorJogo {
 
     private String escolherCorManual(Scanner scanner, List<String> coresDisponiveis) {
         System.out.println("Escolha uma cor:");
-
         for (int i = 0; i < coresDisponiveis.size(); i++) {
-            String cor = coresDisponiveis.get(i);
-            System.out.println((i + 1) + " - " + cor + "Cor" + Cores.RESET);
+            System.out.println((i + 1) + " - " + coresDisponiveis.get(i) + "Cor" + Cores.RESET);
         }
 
         int escolha = 0;
@@ -62,7 +61,7 @@ public class MotorJogo {
             try {
                 escolha = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
-                System.out.println("Entrada inválida. Tente novamente.");
+                System.out.println("Entrada inválida.");
             }
         }
 
@@ -73,6 +72,8 @@ public class MotorJogo {
         int jogadas = 0;
         while (jogadas < MAX_JOGADAS) {
             for (Jogador jogador : jogadores) {
+                if (jogadas >= MAX_JOGADAS) break;
+
                 if (jogador.isPularRodada()) {
                     jogador.setPularRodada(false);
                     continue;
@@ -84,7 +85,9 @@ public class MotorJogo {
 
                 System.out.println(jogador.getCor() + "Vez de " + jogador.getNome() + Cores.RESET);
                 System.out.print("Mover (w/a/s/d): ");
-                char direcao = scanner.nextLine().toLowerCase().charAt(0);
+                String entrada = scanner.nextLine().toLowerCase();
+                if (entrada.isEmpty()) continue;
+                char direcao = entrada.charAt(0);
 
                 int novaLinha = jogador.getLinha();
                 int novaColuna = jogador.getColuna();
@@ -94,52 +97,60 @@ public class MotorJogo {
                     case 's' -> novaLinha++;
                     case 'a' -> novaColuna--;
                     case 'd' -> novaColuna++;
+                    default -> {
+                        System.out.println("Comando inválido. Use w/a/s/d.");
+                        System.out.println("Pressione Enter para continuar...");
+                        scanner.nextLine();
+                        continue;
+                    }
                 }
 
-                if (!tabuleiro.posicaoValida(novaLinha, novaColuna)) continue;
+                if (!tabuleiro.posicaoValida(novaLinha, novaColuna)) {
+                    System.out.println("Movimento fora da mina! Tente outra direção.");
+                    System.out.println("Pressione Enter para continuar...");
+                    scanner.nextLine();
+                    continue;
+                }
 
                 TipoElemento destino = tabuleiro.getElemento(novaLinha, novaColuna);
                 jogador.mover(novaLinha, novaColuna);
 
-                String mensagem = "";
-
-                switch (destino) {
+                String mensagem = switch (destino) {
                     case VAZIO -> {
                         int valor = tabuleiro.getDiamantes(novaLinha, novaColuna);
                         jogador.alterarPontuacao(valor);
-                        mensagem = jogador.getCor() + jogador.getNome() + " encontrou " + valor + " quilates de diamantes!" + Cores.RESET;
+                        yield jogador.getCor() + jogador.getNome() + " encontrou " + valor + " quilates!" + Cores.RESET;
                     }
                     case TUNEL -> {
                         jogador.alterarPontuacao(-10);
-                        mensagem = jogador.getCor() + jogador.getNome() + " caiu em um túnel! -10 pontos!" + Cores.RESET;
+                        yield jogador.getCor() + jogador.getNome() + " caiu em um túnel! -10 pontos!" + Cores.RESET;
                     }
                     case ESCONDERIJO -> {
                         jogador.alterarPontuacao(-20);
-                        mensagem = jogador.getCor() + jogador.getNome() + " entrou num esconderijo perigoso! -20 pontos!" + Cores.RESET;
+                        yield jogador.getCor() + jogador.getNome() + " entrou num esconderijo! -20 pontos!" + Cores.RESET;
                     }
                     case PROSSEGUIR -> {
                         jogador.alterarPontuacao(5);
-                        mensagem = jogador.getCor() + jogador.getNome() + " achou uma pista! +5 pontos!" + Cores.RESET;
+                        yield jogador.getCor() + jogador.getNome() + " achou uma pista! +5 pontos!" + Cores.RESET;
                     }
                     case TELEPORTE -> {
                         jogador.alterarPontuacao(5);
-                        mensagem = jogador.getCor() + jogador.getNome() + " ativou um teleporte! +5 pontos!" + Cores.RESET;
                         int novaL, novaC;
                         do {
                             novaL = new Random().nextInt(LINHAS);
                             novaC = new Random().nextInt(COLUNAS);
                         } while (tabuleiro.getElemento(novaL, novaC) != TipoElemento.VAZIO);
                         jogador.mover(novaL, novaC);
+                        yield jogador.getCor() + jogador.getNome() + " ativou um teleporte! +5 pontos!" + Cores.RESET;
                     }
                     case EXPLOSAO -> {
                         jogador.alterarPontuacao(-15);
                         jogador.setPularRodada(true);
-                        mensagem = jogador.getCor() + jogador.getNome() + " foi atingido por uma explosão! -15 pontos e perde a próxima rodada!" + Cores.RESET;
+                        yield jogador.getCor() + jogador.getNome() + " foi atingido por uma explosão! -15 pontos e perde a próxima rodada!" + Cores.RESET;
                     }
-                }
+                };
 
-                jogadas++;
-
+                jogadas++; // só conta jogadas válidas
                 System.out.println("\n" + mensagem);
                 System.out.println("Pressione Enter para continuar...");
                 scanner.nextLine();
@@ -148,11 +159,11 @@ public class MotorJogo {
 
         exibirRanking();
         declararVencedor();
-        RankingUtil.salvarRanking(jogadores);
+        RankingUtil.salvarRanking(jogadores); // salva no tonight.txt
     }
 
     private void exibirRanking() {
-        System.out.println("\n--- Ranking ---");
+        System.out.println("\n--- Ranking Atual ---");
         for (Jogador j : jogadores) {
             System.out.println(j.getCor() + j.getNome() + ": " + j.getPontuacao() + " pontos" + Cores.RESET);
         }
@@ -165,7 +176,8 @@ public class MotorJogo {
                 vencedor = j;
             }
         }
-        System.out.println("\n🏆 Vencedor: " + vencedor.getCor() + vencedor.getNome() + Cores.RESET);
+        System.out.println("\n🏆 Vencedor: " + vencedor.getCor() + vencedor.getNome() + Cores.RESET +
+                " com " + vencedor.getPontuacao() + " pontos!");
     }
 
     private void limparTela() {
