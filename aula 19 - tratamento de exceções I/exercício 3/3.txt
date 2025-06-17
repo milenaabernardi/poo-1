@@ -1,0 +1,2 @@
+O catch captura e trata exceções lançadas no bloco try.
+Após a execução do catch, o fluxo do programa continua normalmente após o bloco catch ou finally, se houver.

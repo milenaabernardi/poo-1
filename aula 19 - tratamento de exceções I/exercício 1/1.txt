@@ -1,0 +1,2 @@
+A classe que fica no topo da hierarquia de exceções em Java é a Throwable.
+Ela possui duas principais subclasses: Error e Exception.

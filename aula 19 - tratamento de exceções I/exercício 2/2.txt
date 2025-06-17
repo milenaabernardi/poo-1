@@ -1,0 +1,2 @@
+Deve fazer parte do bloco try.
+Esse bloco envolve o código que pode lançar uma exceção durante sua execução.

@@ -1,0 +1,1 @@
+O throw é utilizado para lançar uma exceção manualmente em tempo de execução.

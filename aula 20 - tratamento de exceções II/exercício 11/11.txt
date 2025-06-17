@@ -1,0 +1,3 @@
+Não está correto.
+A cláusula catch (Exception e) captura todas as exceções, incluindo InputMismatchException.
+Logo, o segundo catch nunca será alcançado → erro de compilação por ordem incorreta.

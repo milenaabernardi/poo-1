@@ -1,0 +1,2 @@
+Sim.
+Se você usar catch (Exception e), por exemplo, ele capturará qualquer exceção que seja uma subclasse de Exception, como IOException, NullPointerException, etc.

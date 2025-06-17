@@ -1,0 +1,2 @@
+O programa deve capturar e tratar a exceção, para evitar que ele seja interrompido.
+Isso é feito utilizando blocos try-catch, e opcionalmente finally.

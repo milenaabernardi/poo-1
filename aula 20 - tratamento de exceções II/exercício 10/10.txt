@@ -1,0 +1,2 @@
+Não.
+Error representa problemas graves (ex: OutOfMemoryError) que não devem ser tratados ou lançados pelo programa, pois indicam falhas da JVM, não de lógica do código.

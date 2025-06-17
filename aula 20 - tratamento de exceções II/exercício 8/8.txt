@@ -1,0 +1,3 @@
+Verdadeiro, com uma ressalva:
+O finally sempre é executado, mesmo se ocorrerem exceções ou se houver return no try/catch.
+Mas ele não é necessariamente o último código do programa, apenas do bloco de exceção.

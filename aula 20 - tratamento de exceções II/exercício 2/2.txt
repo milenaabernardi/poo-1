@@ -1,0 +1,1 @@
+Ela será propagada para o bloco externo (ou mais acima, se necessário) até que seja capturada por algum catch compatível ou resulte em encerramento do programa se não for tratada.

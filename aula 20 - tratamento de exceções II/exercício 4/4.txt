@@ -1,0 +1,1 @@
+Sim. O throw lança objetos que são instâncias de classes que herdam de Throwable, como Exception ou Error.

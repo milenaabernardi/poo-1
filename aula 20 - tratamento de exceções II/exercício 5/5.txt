@@ -1,0 +1,2 @@
+Sim.
+Uma exceção pode ser relançada com throw e; dentro de um bloco catch, ou pode-se lançar uma nova exceção.

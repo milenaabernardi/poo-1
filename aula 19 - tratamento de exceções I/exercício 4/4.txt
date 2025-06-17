@@ -1,0 +1,2 @@
+Se uma exceção não for capturada, ela será propagada na pilha de chamadas até que alguma parte do código a capture.
+Se ninguém capturá-la, o programa será encerrado abruptamente, e uma mensagem de erro será exibida no console (stack trace).

@@ -1,0 +1,2 @@
+Se a() lança exceção → executam-se linhas: 1, 2, 5, 6.
+O método b() não será executado, pois a exceção interrompe o fluxo antes de sua chamada.

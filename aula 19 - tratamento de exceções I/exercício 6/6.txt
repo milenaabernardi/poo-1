@@ -1,0 +1,5 @@
+try: contém o código que pode lançar exceções.
+
+catch: define o que fazer quando uma exceção específica ocorre.
+
+finally: é sempre executado após o try e/ou catch, independentemente se uma exceção ocorreu ou não. É usado para liberar recursos, como fechar arquivos.
