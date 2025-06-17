@@ -1,9 +1,9 @@
 package jogo.modelo;
 
-public class Vazio extends ElementoMina {
-    private final int valor;
+public class ElementoVazio extends ElementoMina {
+    private int valor;
 
-    public Vazio(int valor) {
+    public ElementoVazio(int valor) {
         super('.');
         this.valor = valor;
     }
@@ -12,5 +12,10 @@ public class Vazio extends ElementoMina {
     public String executar(Jogador jogador) {
         jogador.alterarPontuacao(valor);
         return jogador.getNome() + " encontrou " + valor + " quilates!";
+    }
+
+    @Override
+    public ElementoVazio clone() {
+        return new ElementoVazio(this.valor);
     }
 }

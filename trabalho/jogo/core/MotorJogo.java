@@ -3,17 +3,17 @@ package jogo.core;
 import jogo.modelo.*;
 import jogo.util.Cores;
 import jogo.util.RankingUtil;
-
 import java.util.*;
 
 /**
  * Classe principal de controle do jogo Caçadores de Diamantes.
  * Controla fluxo do jogo, entrada do usuário e ranking persistente.
  * @author Milena
- * @version 2.0
+ * @version 1.0
  */
+
 public class MotorJogo {
-    private final int MAX_JOGADAS = 10;
+    private final int MAX_JOGADAS = 60;
     private final int LINHAS = 10;
     private final int COLUNAS = 10;
     private Tabuleiro tabuleiro;
@@ -31,9 +31,7 @@ public class MotorJogo {
         int num = scanner.nextInt();
         scanner.nextLine();
 
-        List<String> coresDisponiveis = new ArrayList<>(List.of(
-                Cores.VERMELHO, Cores.VERDE, Cores.AMARELO, Cores.AZUL
-        ));
+        List<String> coresDisponiveis = new ArrayList<>(List.of(Cores.VERMELHO, Cores.VERDE, Cores.AMARELO, Cores.AZUL));
 
         for (int i = 0; i < num; i++) {
             System.out.print("Nome do Jogador " + (i + 1) + ": ");
@@ -112,45 +110,13 @@ public class MotorJogo {
                     continue;
                 }
 
-                TipoElemento destino = tabuleiro.getElemento(novaLinha, novaColuna);
+                ElementoMina elemento = tabuleiro.getElemento(novaLinha, novaColuna);
+                String mensagem = elemento.executar(jogador);
+
                 jogador.mover(novaLinha, novaColuna);
 
-                String mensagem = switch (destino) {
-                    case VAZIO -> {
-                        int valor = tabuleiro.getDiamantes(novaLinha, novaColuna);
-                        jogador.alterarPontuacao(valor);
-                        yield jogador.getCor() + jogador.getNome() + " encontrou " + valor + " quilates!" + Cores.RESET;
-                    }
-                    case TUNEL -> {
-                        jogador.alterarPontuacao(-10);
-                        yield jogador.getCor() + jogador.getNome() + " caiu em um túnel! -10 pontos!" + Cores.RESET;
-                    }
-                    case ESCONDERIJO -> {
-                        jogador.alterarPontuacao(-20);
-                        yield jogador.getCor() + jogador.getNome() + " entrou num esconderijo! -20 pontos!" + Cores.RESET;
-                    }
-                    case PROSSEGUIR -> {
-                        jogador.alterarPontuacao(5);
-                        yield jogador.getCor() + jogador.getNome() + " achou uma pista! +5 pontos!" + Cores.RESET;
-                    }
-                    case TELEPORTE -> {
-                        jogador.alterarPontuacao(5);
-                        int novaL, novaC;
-                        do {
-                            novaL = new Random().nextInt(LINHAS);
-                            novaC = new Random().nextInt(COLUNAS);
-                        } while (tabuleiro.getElemento(novaL, novaC) != TipoElemento.VAZIO);
-                        jogador.mover(novaL, novaC);
-                        yield jogador.getCor() + jogador.getNome() + " ativou um teleporte! +5 pontos!" + Cores.RESET;
-                    }
-                    case EXPLOSAO -> {
-                        jogador.alterarPontuacao(-15);
-                        jogador.setPularRodada(true);
-                        yield jogador.getCor() + jogador.getNome() + " foi atingido por uma explosão! -15 pontos e perde a próxima rodada!" + Cores.RESET;
-                    }
-                };
 
-                jogadas++; // só conta jogadas válidas
+                jogadas++;
                 System.out.println("\n" + mensagem);
                 System.out.println("Pressione Enter para continuar...");
                 scanner.nextLine();
@@ -159,7 +125,7 @@ public class MotorJogo {
 
         exibirRanking();
         declararVencedor();
-        RankingUtil.salvarRanking(jogadores); // salva no tonight.txt
+        RankingUtil.salvarRanking(jogadores);
     }
 
     private void exibirRanking() {
@@ -176,8 +142,7 @@ public class MotorJogo {
                 vencedor = j;
             }
         }
-        System.out.println("\n🏆 Vencedor: " + vencedor.getCor() + vencedor.getNome() + Cores.RESET +
-                " com " + vencedor.getPontuacao() + " pontos!");
+        System.out.println("\n🏆 Vencedor: " + vencedor.getCor() + vencedor.getNome() + Cores.RESET + " com " + vencedor.getPontuacao() + " pontos!");
     }
 
     private void limparTela() {

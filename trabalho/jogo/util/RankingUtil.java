@@ -1,7 +1,6 @@
 package jogo.util;
 
 import jogo.modelo.Jogador;
-
 import java.io.*;
 import java.util.List;
 

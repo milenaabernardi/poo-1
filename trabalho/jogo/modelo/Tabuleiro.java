@@ -5,54 +5,48 @@ import java.util.Random;
 public class Tabuleiro {
     private final int linhas;
     private final int colunas;
-    private TipoElemento[][] mina;
-    private int[][] diamantes;
+    private ElementoMina[][] mina;
     private final Random random = new Random();
 
     public Tabuleiro(int linhas, int colunas) {
         this.linhas = linhas;
         this.colunas = colunas;
-        this.mina = new TipoElemento[linhas][colunas];
-        this.diamantes = new int[linhas][colunas];
-        iniciarTabuleiro();
+        this.mina = new ElementoMina[linhas][colunas];
+        iniciarMina();
     }
 
-    private void iniciarTabuleiro() {
+    private void iniciarMina() {
         for (int i = 0; i < linhas; i++) {
             for (int j = 0; j < colunas; j++) {
-                mina[i][j] = TipoElemento.VAZIO;
-                diamantes[i][j] = random.nextInt(10) + 1;
+                mina[i][j] = new ElementoVazio(random.nextInt(10) + 1);
             }
         }
-        adicionarElementosAleatorios(TipoElemento.PROSSEGUIR, 10);
-        adicionarElementosAleatorios(TipoElemento.TUNEL, 7);
-        adicionarElementosAleatorios(TipoElemento.ESCONDERIJO, 8);
-        adicionarElementosAleatorios(TipoElemento.TELEPORTE, 2);
-        adicionarElementosAleatorios(TipoElemento.EXPLOSAO, 3);
+
+        adicionarAleatorios(new ElementoTunel(), 15);
+        adicionarAleatorios(new ElementoEsconderijo(), 10);
+        adicionarAleatorios(new ElementoPista(), 10);
+        adicionarAleatorios(new ElementoTeleporte(), 5);
+        adicionarAleatorios(new ElementoExplosao(), 8);
     }
 
-    private void adicionarElementosAleatorios(TipoElemento tipo, int quantidade) {
+    private void adicionarAleatorios(ElementoMina elemento, int quantidade) {
         int colocados = 0;
         while (colocados < quantidade) {
             int r = random.nextInt(linhas);
             int c = random.nextInt(colunas);
-            if (mina[r][c] == TipoElemento.VAZIO) {
-                mina[r][c] = tipo;
+            if (mina[r][c] instanceof ElementoVazio) {
+                mina[r][c] = elemento.clone();
                 colocados++;
             }
         }
     }
 
-    public TipoElemento getElemento(int linha, int coluna) {
+    public ElementoMina getElemento(int linha, int coluna) {
         return mina[linha][coluna];
     }
 
-    public void setElemento(int linha, int coluna, TipoElemento tipo) {
-        mina[linha][coluna] = tipo;
-    }
-
-    public int getDiamantes(int linha, int coluna) {
-        return diamantes[linha][coluna];
+    public void setElemento(int linha, int coluna, ElementoMina elemento) {
+        mina[linha][coluna] = elemento;
     }
 
     public boolean posicaoValida(int linha, int coluna) {
@@ -61,7 +55,6 @@ public class Tabuleiro {
 
     public void exibir(java.util.List<Jogador> jogadores) {
         System.out.println("   +" + "---".repeat(colunas) + "+");
-
         for (int i = 0; i < linhas; i++) {
             System.out.print("   |");
             for (int j = 0; j < colunas; j++) {
@@ -74,12 +67,11 @@ public class Tabuleiro {
                     }
                 }
                 if (!temJogador) {
-                    System.out.printf(" %c ", mina[i][j].getSimbolo());
+                    System.out.print(" " + mina[i][j].getSimbolo() + " ");
                 }
             }
             System.out.println("|");
         }
-
         System.out.println("   +" + "---".repeat(colunas) + "+\n");
     }
 }

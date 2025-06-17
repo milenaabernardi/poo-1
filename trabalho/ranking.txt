@@ -1,2 +1,2 @@
-milena;3
-laura;6
+milena;50
+laura;-72
